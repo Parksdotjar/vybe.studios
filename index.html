@@ -4,22 +4,29 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>VYBE STUDIOS</title>
-  <meta name="description" content="VYBE STUDIOS — Minecraft editing studio. Portfolio, pricing, and contact." />
+  <meta name="description" content="VYBE STUDIOS — Minecraft editing studio. Portfolio, pricing, and Discord." />
+
   <style>
     :root{
-      --bg:#050607;
-      --panel:#0b0d10;
-      --panel2:#0e1116;
-      --text:#f4f5f7;
-      --muted:#a9b0bd;
-      --muted2:#7d8697;
+      /* Lavender / glassy dark */
+      --bg:#05040a;
+      --panel:#0b0a14;
+      --panel2:#0f0e1b;
+      --text:#f5f4ff;
+      --muted:#b7b2d8;
+      --muted2:#8f89b8;
       --stroke:rgba(255,255,255,.10);
       --stroke2:rgba(255,255,255,.06);
-      --glow:rgba(255,255,255,.08);
-      --shadow: 0 22px 70px rgba(0,0,0,.55);
+
+      --lav1:#b99cff;
+      --lav2:#7f5cff;
+      --lav3:#4a2cff;
+
+      --shadow: 0 24px 80px rgba(0,0,0,.60);
       --r:18px;
       --r2:26px;
       --max:1120px;
+
       --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
@@ -32,24 +39,24 @@
       font-family:var(--font);
       color:var(--text);
       background:
-        radial-gradient(1200px 600px at 22% 0%, rgba(255,255,255,.08), transparent 55%),
-        radial-gradient(900px 500px at 85% 20%, rgba(255,255,255,.06), transparent 55%),
-        radial-gradient(900px 500px at 55% 95%, rgba(255,255,255,.05), transparent 55%),
+        radial-gradient(1200px 700px at 18% 0%, rgba(185,156,255,.22), transparent 55%),
+        radial-gradient(900px 520px at 85% 18%, rgba(127,92,255,.16), transparent 58%),
+        radial-gradient(900px 520px at 55% 100%, rgba(74,44,255,.12), transparent 60%),
         var(--bg);
       overflow-x:hidden;
     }
 
     a{color:inherit; text-decoration:none}
-
     .wrap{max-width:var(--max); margin:0 auto; padding:0 40px;}
+    .anchor{scroll-margin-top:92px}
 
-    /* --- Top bar --- */
+    /* ===== Top bar ===== */
     header{
       position:sticky;
       top:0;
       z-index:50;
       backdrop-filter:saturate(140%) blur(14px);
-      background:linear-gradient(to bottom, rgba(5,6,7,.85), rgba(5,6,7,.55));
+      background:linear-gradient(to bottom, rgba(5,4,10,.88), rgba(5,4,10,.55));
       border-bottom:1px solid var(--stroke2);
     }
     .nav{
@@ -70,11 +77,11 @@
       width:34px; height:34px;
       border-radius:12px;
       background:
-        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.95), rgba(255,255,255,.15) 60%, transparent 62%),
-        radial-gradient(18px 18px at 68% 68%, rgba(255,255,255,.18), transparent 65%),
-        rgba(255,255,255,.04);
-      border:1px solid var(--stroke);
-      box-shadow: 0 14px 40px rgba(0,0,0,.6);
+        radial-gradient(14px 14px at 28% 30%, rgba(255,255,255,.95), rgba(255,255,255,.16) 62%, transparent 64%),
+        radial-gradient(22px 22px at 70% 70%, rgba(185,156,255,.25), transparent 70%),
+        linear-gradient(135deg, rgba(127,92,255,.22), rgba(0,0,0,0));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
       position:relative;
       overflow:hidden;
     }
@@ -83,8 +90,8 @@
       position:absolute;
       inset:-1px;
       border-radius:12px;
-      background:linear-gradient(135deg, rgba(255,255,255,.10), transparent 55%, rgba(255,255,255,.06));
-      opacity:.9;
+      background:linear-gradient(135deg, rgba(255,255,255,.10), transparent 55%, rgba(185,156,255,.10));
+      opacity:.95;
       pointer-events:none;
     }
 
@@ -94,7 +101,7 @@
       line-height:1.05;
     }
     .brandText strong{
-      font-weight:680;
+      font-weight:780;
       letter-spacing:.2px;
       font-size:14.5px;
     }
@@ -111,7 +118,6 @@
       justify-content:center;
       flex:1;
     }
-
     .tab{
       font-size:13px;
       color:var(--muted);
@@ -123,14 +129,14 @@
     }
     .tab:hover{
       background:rgba(255,255,255,.05);
-      border-color:rgba(255,255,255,.10);
+      border-color:rgba(255,255,255,.12);
       color:var(--text);
       transform: translateY(-1px);
-      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      box-shadow: 0 14px 44px rgba(0,0,0,.40);
     }
     .tab[aria-current="page"]{
-      background:rgba(255,255,255,.06);
-      border-color:rgba(255,255,255,.12);
+      background:rgba(185,156,255,.10);
+      border-color:rgba(185,156,255,.22);
       color:var(--text);
     }
 
@@ -143,36 +149,43 @@
     }
 
     .btn{
-      border:1px solid rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.14);
       background:rgba(255,255,255,.03);
       color:var(--text);
       border-radius:999px;
       padding:10px 14px;
       font-size:13px;
-      transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease, filter .15s ease;
       cursor:pointer;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      box-shadow: 0 10px 32px rgba(0,0,0,.40);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
     }
     .btn:hover{
       background:rgba(255,255,255,.07);
-      border-color:rgba(255,255,255,.18);
+      border-color:rgba(255,255,255,.20);
       transform: translateY(-1px);
-      box-shadow: 0 16px 46px rgba(0,0,0,.45);
+      box-shadow: 0 18px 54px rgba(0,0,0,.50);
     }
     .btn:active{transform: translateY(1px); box-shadow: 0 8px 24px rgba(0,0,0,.35);}
 
     .btn.primary{
-      background:rgba(255,255,255,.08);
-      color:var(--text);
-      border-color:rgba(255,255,255,.20);
-      font-weight:650;
-      box-shadow: 0 18px 60px rgba(0,0,0,.45);
+      background:linear-gradient(135deg, rgba(185,156,255,.22), rgba(127,92,255,.18));
+      border-color:rgba(185,156,255,.30);
+      font-weight:760;
+      box-shadow: 0 22px 70px rgba(0,0,0,.55);
     }
-    .btn.primary:hover{background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.26)}
+    .btn.primary:hover{
+      filter:brightness(1.06);
+      background:linear-gradient(135deg, rgba(185,156,255,.28), rgba(127,92,255,.22));
+      border-color:rgba(185,156,255,.38);
+    }
 
     .menuBtn{display:none}
 
-    /* --- Hero --- */
+    /* ===== Hero ===== */
     main{padding:56px 0 96px; background:transparent;}
 
     .hero{
@@ -196,9 +209,9 @@
       font-size:12px;
       padding:6px 10px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.03);
-      color:rgba(255,255,255,.82);
+      border:1px solid rgba(185,156,255,.22);
+      background:rgba(185,156,255,.10);
+      color:rgba(245,244,255,.92);
     }
 
     h1{
@@ -206,7 +219,7 @@
       font-size: clamp(40px, 4.6vw, 68px);
       line-height:1.03;
       letter-spacing:-.02em;
-      font-weight:760;
+      font-weight:860;
     }
 
     .sub{
@@ -214,7 +227,7 @@
       color:var(--muted);
       font-size:16px;
       line-height:1.65;
-      max-width:54ch;
+      max-width:56ch;
     }
 
     .ctaRow{display:flex; gap:10px; align-items:center; margin-top:22px; flex-wrap:wrap}
@@ -225,17 +238,20 @@
       gap:8px;
       padding:10px 12px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.12);
       background:rgba(255,255,255,.02);
-      color:rgba(255,255,255,.86);
+      color:rgba(255,255,255,.90);
       font-size:13px;
-      transition: background .15s ease, border-color .15s ease;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
     }
-    .ghostLink:hover{background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.14)}
+    .ghostLink:hover{
+      background:rgba(185,156,255,.08);
+      border-color:rgba(185,156,255,.22);
+      transform: translateY(-1px);
+    }
+    .arrow{opacity:.85}
 
-    .arrow{opacity:.8}
-
-    /* --- Showcase card (Linear-ish) --- */
+    /* ===== Showcase ===== */
     .shot{
       border-radius:var(--r2);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
@@ -245,49 +261,55 @@
       position:relative;
       min-height: 410px;
     }
-
     .shot:before{
       content:"";
       position:absolute;
       inset:0;
       background:
-        radial-gradient(500px 260px at 18% 10%, rgba(255,255,255,.14), transparent 55%),
-        radial-gradient(520px 320px at 80% 30%, rgba(255,255,255,.09), transparent 60%),
-        radial-gradient(500px 380px at 50% 120%, rgba(255,255,255,.08), transparent 58%);
+        radial-gradient(520px 280px at 18% 10%, rgba(185,156,255,.22), transparent 55%),
+        radial-gradient(520px 320px at 80% 30%, rgba(127,92,255,.16), transparent 60%),
+        radial-gradient(600px 420px at 50% 120%, rgba(74,44,255,.14), transparent 58%);
       pointer-events:none;
     }
-
+    .shot:after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius:var(--r2);
+      background:linear-gradient(135deg, rgba(185,156,255,.18), transparent 45%, rgba(127,92,255,.12));
+      opacity:.9;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
     .shotTop{
       display:flex;
       align-items:center;
       justify-content:space-between;
       padding:14px 16px;
       border-bottom:1px solid rgba(255,255,255,.08);
-      background:rgba(0,0,0,.20);
+      background:rgba(0,0,0,.24);
+      position:relative;
+      z-index:1;
     }
-
     .dots{display:flex; gap:7px; align-items:center}
     .dot{width:8px; height:8px; border-radius:999px; background:rgba(255,255,255,.16)}
-
     .shotTag{
       font-family:var(--mono);
       font-size:12px;
-      color:rgba(255,255,255,.72);
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.03);
+      color:rgba(255,255,255,.78);
+      border:1px solid rgba(185,156,255,.20);
+      background:rgba(185,156,255,.08);
       border-radius:999px;
       padding:6px 10px;
     }
-
-    .shotBody{padding:18px 18px 16px}
+    .shotBody{padding:18px 18px 16px; position:relative; z-index:1;}
 
     .miniTitle{
       font-size:18px;
-      font-weight:700;
+      font-weight:800;
       margin:0 0 8px;
       letter-spacing:-.01em;
     }
-
     .miniSub{
       margin:0;
       color:var(--muted);
@@ -295,14 +317,12 @@
       line-height:1.6;
       max-width:60ch;
     }
-
     .grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:12px;
       margin-top:16px;
     }
-
     .card{
       border-radius:16px;
       border:1px solid rgba(255,255,255,.10);
@@ -312,9 +332,8 @@
     .card b{display:block; font-size:13px; margin-bottom:6px}
     .card p{margin:0; color:var(--muted); font-size:12.5px; line-height:1.55}
 
-    /* --- Sections --- */
+    /* ===== Sections ===== */
     section{margin-top:64px}
-
     .sectionHead{
       display:flex;
       align-items:flex-end;
@@ -322,51 +341,20 @@
       gap:14px;
       margin-bottom:18px;
     }
-
     h2{
       margin:0;
       font-size:22px;
       letter-spacing:-.01em;
-      font-weight:750;
+      font-weight:860;
     }
-
     .hint{margin:0; color:var(--muted2); font-size:13px; line-height:1.5}
 
-    .tiles{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-    }
-
-    .tile{
-      border-radius:var(--r);
-      border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      padding:16px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .tile:before{
-      content:"";
-      position:absolute;
-      inset:-1px;
-      border-radius:var(--r);
-      background:linear-gradient(135deg, rgba(255,255,255,.08), transparent 40%, rgba(255,255,255,.05));
-      opacity:.7;
-      pointer-events:none;
-    }
-
-    .tile h3{margin:0 0 6px; font-size:14px; font-weight:740}
-    .tile p{margin:0; color:var(--muted); font-size:13px; line-height:1.6}
-
-    /* --- Portfolio list --- */
+    /* ===== Portfolio list ===== */
     .portfolio{
       display:grid;
       grid-template-columns: 1fr;
       gap:10px;
     }
-
     .work{
       border-radius:var(--r);
       border:1px solid rgba(255,255,255,.10);
@@ -380,34 +368,32 @@
       transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
     }
     .work:hover{
-      background:rgba(255,255,255,.05);
-      border-color:rgba(255,255,255,.14);
+      background:rgba(185,156,255,.07);
+      border-color:rgba(185,156,255,.20);
       transform: translateY(-1px);
-      box-shadow: 0 18px 60px rgba(0,0,0,.45);
+      box-shadow: 0 18px 64px rgba(0,0,0,.50);
     }
-
     .workLeft{display:flex; flex-direction:column; gap:4px}
-    .workTitle{font-weight:720; letter-spacing:-.01em}
+    .workTitle{font-weight:800; letter-spacing:-.01em}
     .workMeta{color:var(--muted); font-size:12.5px}
 
     .badge{
       font-family:var(--mono);
       font-size:12px;
-      color:rgba(255,255,255,.82);
-      border:1px solid rgba(255,255,255,.10);
+      color:rgba(255,255,255,.88);
+      border:1px solid rgba(255,255,255,.12);
       background:rgba(255,255,255,.03);
       border-radius:999px;
       padding:6px 10px;
       white-space:nowrap;
     }
 
-    /* --- Pricing --- */
+    /* ===== Pricing ===== */
     .pricing{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap:12px;
     }
-
     .plan{
       border-radius:var(--r2);
       border:1px solid rgba(255,255,255,.12);
@@ -416,15 +402,22 @@
       position:relative;
       overflow:hidden;
     }
-
-    .plan.featured{
-      border-color:rgba(255,255,255,.20);
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+    .plan:before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      border-radius:var(--r2);
+      background:linear-gradient(135deg, rgba(185,156,255,.14), transparent 42%, rgba(127,92,255,.10));
+      opacity:.8;
+      pointer-events:none;
     }
-
-    .plan h3{margin:0 0 8px; font-size:15px; font-weight:760}
-    .price{font-size:28px; font-weight:820; letter-spacing:-.02em}
-    .price span{font-size:13px; color:var(--muted); font-weight:600; margin-left:6px}
+    .plan.featured{
+      border-color:rgba(185,156,255,.32);
+      background: linear-gradient(180deg, rgba(185,156,255,.12), rgba(255,255,255,.02));
+    }
+    .plan h3{margin:0 0 8px; font-size:15px; font-weight:860; position:relative; z-index:1;}
+    .price{font-size:28px; font-weight:920; letter-spacing:-.02em; position:relative; z-index:1;}
+    .price span{font-size:13px; color:var(--muted); font-weight:650; margin-left:6px}
 
     ul{
       margin:12px 0 0;
@@ -433,8 +426,9 @@
       display:flex;
       flex-direction:column;
       gap:8px;
+      position:relative;
+      z-index:1;
     }
-
     li{
       display:flex;
       gap:10px;
@@ -443,63 +437,63 @@
       font-size:13px;
       line-height:1.5;
     }
-
     .check{
       width:18px; height:18px;
       border-radius:6px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.05);
+      border:1px solid rgba(185,156,255,.22);
+      background:rgba(185,156,255,.10);
       display:grid;
       place-items:center;
-      color:rgba(255,255,255,.9);
+      color:rgba(255,255,255,.96);
       font-size:12px;
       flex:0 0 auto;
       margin-top:1px;
     }
 
-    /* --- Contact --- */
-    .contact{
+    /* ===== Discord section ===== */
+    .discord{
+      border-radius:var(--r2);
+      border:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      padding:18px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .discord:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(700px 380px at 15% 20%, rgba(185,156,255,.20), transparent 55%),
+        radial-gradient(700px 380px at 85% 30%, rgba(127,92,255,.14), transparent 60%);
+      pointer-events:none;
+    }
+    .discordInner{
       display:grid;
       grid-template-columns: 1.1fr .9fr;
       gap:12px;
-      align-items:stretch;
+      align-items:center;
+      position:relative;
+      z-index:1;
     }
-
-    .form{
-      border-radius:var(--r2);
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.03);
-      padding:18px;
-    }
-
-    .field{display:flex; flex-direction:column; gap:8px; margin-bottom:12px}
-    label{font-size:12px; color:var(--muted2)}
-
-    input, textarea{
-      border-radius:14px;
+    .discord h3{margin:0 0 8px; font-size:18px; font-weight:900; letter-spacing:-.01em}
+    .discord p{margin:0; color:var(--muted); font-size:13.5px; line-height:1.7; max-width:62ch}
+    .discordBox{
+      border-radius:18px;
       border:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.35);
-      color:var(--text);
-      padding:12px 12px;
+      background:rgba(0,0,0,.28);
+      padding:14px;
+    }
+    .kv{
+      display:flex; justify-content:space-between; gap:12px;
+      padding:10px 0;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
       font-size:13px;
-      outline:none;
-      transition:border-color .15s ease, background .15s ease;
     }
-    input:focus, textarea:focus{border-color:rgba(255,255,255,.22); background:rgba(0,0,0,.45)}
-    textarea{min-height:120px; resize:vertical}
-
-    .side{
-      border-radius:var(--r2);
-      border:1px solid rgba(255,255,255,.10);
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      padding:18px;
-    }
-
-    .side h3{margin:0 0 8px; font-size:15px; font-weight:760}
-    .side p{margin:0; color:var(--muted); font-size:13px; line-height:1.65}
-
-    .links{display:flex; flex-direction:column; gap:10px; margin-top:12px}
-    .linkRow{display:flex; align-items:center; justify-content:space-between; gap:10px}
+    .kv:last-child{border-bottom:none}
+    .kv b{color:var(--text); font-weight:820}
 
     footer{
       margin-top:74px;
@@ -509,29 +503,27 @@
       font-size:12.5px;
     }
 
-    /* --- Mobile --- */
+    /* ===== Mobile ===== */
     @media (max-width: 980px){
       .hero{grid-template-columns:1fr;}
       .shot{min-height:360px}
-      .tiles{grid-template-columns:1fr;}
       .pricing{grid-template-columns:1fr;}
-      .contact{grid-template-columns:1fr;}
+      .discordInner{grid-template-columns:1fr;}
       .actions{min-width:auto}
       .brand{min-width:auto}
       .tabs{display:none}
       .menuBtn{display:inline-flex}
     }
 
-    /* Mobile drawer */
+    /* ===== Mobile drawer ===== */
     .drawer{
       position:fixed;
       inset:0;
-      background:rgba(0,0,0,.6);
+      background:rgba(0,0,0,.62);
       display:none;
       z-index:80;
     }
     .drawer[open]{display:block}
-
     .sheet{
       position:absolute;
       right:16px;
@@ -539,11 +531,10 @@
       width:min(420px, calc(100% - 32px));
       border-radius:22px;
       border:1px solid rgba(255,255,255,.12);
-      background:rgba(10,12,15,.96);
+      background:rgba(11,10,20,.96);
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-
     .sheetHead{
       padding:14px 14px;
       border-bottom:1px solid rgba(255,255,255,.08);
@@ -551,16 +542,13 @@
       align-items:center;
       justify-content:space-between;
     }
-
     .sheetHead b{font-size:13px}
     .sheetNav{display:flex; flex-direction:column; padding:10px}
     .sheetNav a{padding:12px 12px; border-radius:14px; color:var(--muted); border:1px solid transparent}
-    .sheetNav a:hover{background:rgba(255,255,255,.04); border-color:rgba(255,255,255,.10); color:var(--text)}
-
-    /* Smooth anchor offset for sticky header */
-    .anchor{scroll-margin-top:92px}
+    .sheetNav a:hover{background:rgba(185,156,255,.08); border-color:rgba(185,156,255,.18); color:var(--text)}
   </style>
 </head>
+
 <body>
   <header>
     <div class="wrap">
@@ -577,12 +565,12 @@
           <a class="tab" href="#home" data-tab>Home</a>
           <a class="tab" href="#portfolio" data-tab>Portfolio</a>
           <a class="tab" href="#pricing" data-tab>Pricing</a>
-          <a class="tab" href="#contact" data-tab>Contact</a>
+          <a class="tab" href="#discord" data-tab>Discord</a>
         </nav>
 
         <div class="actions">
           <a class="btn" href="#portfolio" data-nav>View work</a>
-          <a class="btn primary" href="#contact" data-nav>Book a slot</a>
+          <a class="btn primary" href="#discord" data-nav>Join Discord</a>
           <button class="btn menuBtn" id="menuBtn" aria-haspopup="dialog" aria-controls="drawer" aria-expanded="false">Menu</button>
         </div>
       </div>
@@ -600,35 +588,36 @@
         <a href="#home" data-nav>Home</a>
         <a href="#portfolio" data-nav>Portfolio</a>
         <a href="#pricing" data-nav>Pricing</a>
-        <a href="#contact" data-nav>Contact</a>
+        <a href="#discord" data-nav>Discord</a>
       </div>
     </div>
   </div>
 
   <main>
     <div class="wrap">
+      <!-- ===== HERO ===== -->
       <section class="hero anchor" id="home">
         <div>
           <div class="kicker">
-            <span class="pill">Black/White • Linear‑style</span>
-            <span>Bold edits. Clean motion. Minecraft‑ready.</span>
+            <span class="pill">Lavender • Glass • Clean</span>
+            <span>Bold edits. Clean motion. Minecraft-ready.</span>
           </div>
 
           <h1>
             High Level Minecraft Promos
-            for a Fair Price
+            that feel expensive
           </h1>
 
           <p class="sub">
-            <span id="nameInline">VYBE STUDIO</span> is a small yet professional editing studio
-            ready to fit your SMP promo needs.
+            <span id="nameInline">VYBE STUDIOS</span> is a small yet professional editing studio
+            built for SMP promos — pacing, typography, impact frames, and clean motion that sells your server.
           </p>
 
           <div class="ctaRow">
-            <a class="btn primary" href="#portfolio" data-nav>See portfolio</a>
-            <a class="btn" href="#pricing" data-nav>Pricing</a>
-            <a class="ghostLink" href="#contact" data-nav>
-              Quick contact <span class="arrow">→</span>
+            <a class="btn primary" href="#discord" data-nav>Join Discord</a>
+            <a class="btn" href="#portfolio" data-nav>See portfolio</a>
+            <a class="ghostLink" href="#pricing" data-nav>
+              View pricing <span class="arrow">→</span>
             </a>
           </div>
         </div>
@@ -642,7 +631,7 @@
           </div>
           <div class="shotBody">
             <p class="miniTitle">What we focus on for SMP promos</p>
-            <p class="miniSub">Every SMP promo is built to attract players, set the tone of the server, and clearly communicate what makes it unique.</p>
+            <p class="miniSub">Every promo is built to attract players, set the tone of the server, and clearly communicate what makes it unique.</p>
 
             <div class="grid">
               <div class="card">
@@ -666,6 +655,7 @@
         </div>
       </section>
 
+      <!-- ===== PORTFOLIO ===== -->
       <section class="anchor" id="portfolio">
         <div class="sectionHead">
           <div>
@@ -710,19 +700,20 @@
         </div>
       </section>
 
+      <!-- ===== PRICING (prices +70%) ===== -->
       <section class="anchor" id="pricing">
         <div class="sectionHead">
           <div>
             <h2>Pricing</h2>
             <p class="hint">All pricing is based on SMP promo work and is calculated per second of the final video.</p>
           </div>
-          <span class="badge">per‑second</span>
+          <span class="badge">per-second</span>
         </div>
 
         <div class="pricing">
           <div class="plan">
             <h3>Simple Promo</h3>
-            <div class="price">$0.80<span>/ second</span></div>
+            <div class="price">$1.36<span>/ second</span></div>
             <ul>
               <li><span class="check">✓</span> Clean cuts + pacing (no overkill)</li>
               <li><span class="check">✓</span> Basic captions + minimal motion</li>
@@ -730,84 +721,73 @@
               <li><span class="check">✓</span> 1 revision</li>
             </ul>
             <div style="height:14px"></div>
-            <a class="btn" href="#contact" data-nav>Book Simple</a>
+            <a class="btn" href="#discord" data-nav>Book via Discord</a>
           </div>
 
           <div class="plan featured">
             <h3>Mid Range Promo</h3>
-            <div class="price">$0.95<span>/ second</span></div>
+            <div class="price">$1.62<span>/ second</span></div>
             <ul>
               <li><span class="check">✓</span> Strong beat sync + smoother motion</li>
-              <li><span class="check">✓</span> Bold title moments (Linear‑style)</li>
+              <li><span class="check">✓</span> Bold title moments (Linear-style)</li>
               <li><span class="check">✓</span> Impact frames + subtle shakes</li>
               <li><span class="check">✓</span> 2 revisions + priority queue</li>
             </ul>
             <div style="height:14px"></div>
-            <a class="btn primary" href="#contact" data-nav>Book Mid Range</a>
+            <a class="btn primary" href="#discord" data-nav>Book via Discord</a>
           </div>
 
           <div class="plan">
             <h3>High End Promo</h3>
-            <div class="price">$1.30<span>/ second</span></div>
+            <div class="price">$2.21<span>/ second</span></div>
             <ul>
-              <li><span class="check">✓</span> High‑end pacing + cinematic flow</li>
+              <li><span class="check">✓</span> High-end pacing + cinematic flow</li>
               <li><span class="check">✓</span> Advanced motion + transitions</li>
               <li><span class="check">✓</span> VFX moments (sparks/glow/particles) used tastefully</li>
               <li><span class="check">✓</span> 3 revisions + rush option</li>
             </ul>
             <div style="height:14px"></div>
-            <a class="btn" href="#contact" data-nav>Book High End</a>
+            <a class="btn" href="#discord" data-nav>Book via Discord</a>
           </div>
         </div>
 
         <div style="height:12px"></div>
-        <p class="hint" style="margin:0">Pricing scales clearly with length so you know exactly what you’re paying for.</p>
+        <p class="hint" style="margin:0">Join the Discord to request a slot and get a quick quote based on length + complexity.</p>
       </section>
 
-      <section class="anchor" id="contact">
+      <!-- ===== DISCORD (replaces contact form) ===== -->
+      <section class="anchor" id="discord">
         <div class="sectionHead">
           <div>
-            <h2>Contact</h2>
-            
+            <h2>Discord</h2>
+            <p class="hint">This site is just the front door — everything happens in the server.</p>
           </div>
           <span class="badge">fast replies</span>
         </div>
 
-        <div class="contact">
-          <form class="form" action="https://formspree.io/f/mlgeyzwg" method="POST">
-            <div class="field">
-              <label for="name">Name</label>
-              <input id="name" name="name" placeholder="Your name" autocomplete="name" required />
-            </div>
-            <div class="field">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="email" required />
-            </div>
-            <div class="field">
-              <label for="type">What do you need?</label>
-              <input id="type" name="type" placeholder="Short / Longform / Montage / Trailer" />
-            </div>
-            <div class="field">
-              <label for="msg">Details</label>
-              <textarea id="msg" name="message" placeholder="Length, deadline, examples you like, link to clips..." required></textarea>
-            </div>
-            <button class="btn primary" type="submit">Send message</button>
-            
-          </form>
+        <div class="discord">
+          <div class="discordInner">
+            <div>
+              <h3>Join the VYBE Studios server</h3>
+              <p>
+                To book a promo, ask questions, or see updates, hop in the Discord.
+                Send your clip links, reference styles, desired length, and deadline — we’ll reply with availability + next steps.
+              </p>
 
-          <aside class="side">
-            <h3>Quick info</h3>
-            <p>
-              You can reach out directly to discuss timelines, pricing, and what style best fits your server or event.
-            </p>
-            <div class="links">
-              <div class="linkRow"><span class="badge">Discord</span><span style="color:var(--muted)">@yourlocalparkx</span></div>
-              <div class="linkRow"><span class="badge">Email</span><span style="color:var(--muted)">vybe.studios@outlook.com</span></div>
-              <div class="linkRow"><span class="badge">Turnaround</span><span style="color:var(--muted)">1–3 days</span></div>
+              <div style="height:14px"></div>
+              <a class="btn primary" href="https://discord.gg/WtV5zXGRM4" target="_blank" rel="noopener">
+                Join Discord ↗
+              </a>
+              <a class="btn" href="#portfolio" data-nav>See work</a>
             </div>
-            <div style="height:14px"></div>
-            <a class="btn" href="#portfolio" data-nav>Back to portfolio</a>
-          </aside>
+
+            <div class="discordBox" aria-label="Discord quick info">
+              <div class="kv"><span>Invite</span><b>discord.gg/WtV5zXGRM4</b></div>
+              <div class="kv"><span>Turnaround</span><b>1–3 days</b></div>
+              <div class="kv"><span>What to send</span><b>Length • Deadline • Examples • Clips</b></div>
+              <div class="kv"><span>Status</span><b>Slots posted in-server</b></div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -815,7 +795,7 @@
         <div class="wrap" style="padding:0">
           <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap">
             <span>© <span id="year"></span> <span id="nameFooter">VYBE STUDIOS</span>. All rights reserved.</span>
-            <span style="font-family:var(--mono)">monochrome • rounded • bold</span>
+            <span style="font-family:var(--mono)">promos • done • right</span>
           </div>
         </div>
       </footer>
@@ -824,13 +804,13 @@
 
   <script>
     /**
-     * Edit just this object later to change branding.
-     * (So you can rename VYBE STUDIOS to VRTX Studio or anything.)
+     * Branding single source of truth
      */
     const BRAND = {
       name: "VYBE STUDIOS",
       tag: "vrtx-ready • mc edits",
-      heroTag: "VYBE / pipeline"
+      heroTag: "VYBE / pipeline",
+      discordInvite: "https://discord.gg/WtV5zXGRM4"
     };
 
     function applyBrand(){
@@ -841,7 +821,6 @@
       document.getElementById("siteTag").textContent = BRAND.tag;
       document.getElementById("shotTag").textContent = BRAND.heroTag;
     }
-
     applyBrand();
     document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -851,7 +830,11 @@
 
     function setActive(hash){
       const target = (hash || "#home").toLowerCase();
-      tabs.forEach(a => a.setAttribute("aria-current", a.getAttribute("href").toLowerCase() === target ? "page" : "false"));
+      tabs.forEach(a => {
+        const isActive = a.getAttribute("href").toLowerCase() === target;
+        if (isActive) a.setAttribute("aria-current", "page");
+        else a.removeAttribute("aria-current");
+      });
     }
 
     function smoothToHash(hash){
@@ -874,7 +857,7 @@
     [...tabs, ...navLinks].forEach(a => a.addEventListener("click", onNavClick));
 
     // Observe sections for active state
-    const sections = ["#home", "#portfolio", "#pricing", "#contact"].map(id => document.querySelector(id));
+    const sections = ["#home", "#portfolio", "#pricing", "#discord"].map(id => document.querySelector(id));
     const io = new IntersectionObserver((entries)=>{
       const visible = entries
         .filter(e => e.isIntersecting)
@@ -903,9 +886,6 @@
     closeBtn?.addEventListener("click", closeDrawer);
     drawer?.addEventListener("click", (e)=>{ if(e.target === drawer) closeDrawer(); });
     window.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeDrawer(); });
-
-    
   </script>
 </body>
 </html>
-
