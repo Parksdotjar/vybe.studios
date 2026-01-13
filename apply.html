@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Editor Application — VYBE Studios</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .application-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 20px 40px;
+        }
+
+        .application-form {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .application-form h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .application-form .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-group label .required {
+            color: #ff6b6b;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="url"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 32px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message,
+        .error-message {
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #4caf50;
+        }
+
+        .error-message {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #f44336;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="application-container">
+        <form class="application-form" id="applicationForm">
+            <h1>Editor Application</h1>
+            <p class="subtitle">Join the VYBE Studios team</p>
+
+            <div class="form-group">
+                <label>Discord Username <span class="required">*</span></label>
+                <input type="text" name="discord" placeholder="username#0000" required>
+            </div>
+
+            <div class="form-group">
+                <label>Age <span class="required">*</span></label>
+                <input type="number" name="age" min="13" max="99" placeholder="18" required>
+            </div>
+
+            <div class="form-group">
+                <label>Payment Methods <span class="required">*</span></label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="payment" value="PayPal">
+                        <span>PayPal</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="payment" value="Venmo">
+                        <span>Venmo</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="payment" value="CashApp">
+                        <span>CashApp</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="payment" value="Zelle">
+                        <span>Zelle</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="payment" value="Other">
+                        <span>Other</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Portfolio / Video Link <span class="required">*</span></label>
+                <input type="url" name="portfolio" placeholder="https://youtube.com/..." required>
+            </div>
+
+            <div class="form-group">
+                <label>Software Used <span class="required">*</span></label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="software" value="After Effects">
+                        <span>After Effects</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="software" value="Premiere Pro">
+                        <span>Premiere Pro</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="software" value="DaVinci Resolve">
+                        <span>DaVinci Resolve</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="software" value="Final Cut Pro">
+                        <span>Final Cut Pro</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="software" value="Other">
+                        <span>Other</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Years of Experience <span class="required">*</span></label>
+                <select name="experience" required>
+                    <option value="">Select...</option>
+                    <option value="Less than 1 year">Less than 1 year</option>
+                    <option value="1-2 years">1-2 years</option>
+                    <option value="2-3 years">2-3 years</option>
+                    <option value="3-5 years">3-5 years</option>
+                    <option value="5+ years">5+ years</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>About Yourself <span class="required">*</span></label>
+                <textarea name="about"
+                    placeholder="Tell us about your editing style, experience, and why you want to join VYBE Studios..."
+                    required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Application</button>
+
+            <div class="success-message" id="successMessage">
+                ✓ Application submitted successfully! We'll review it and get back to you soon.
+            </div>
+            <div class="error-message" id="errorMessage">
+                ✗ Failed to submit application. Please try again.
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Initialize background
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+        const mouse = { x: -1000, y: -1000 };
+
+        const resize = () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            initParticles();
+        };
+
+        window.addEventListener('resize', resize);
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        class Particle {
+            constructor() {
+                this.reset();
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+            }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 30) + 1;
+                this.alpha = Math.random() * 0.4 + 0.05;
+            }
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let maxDist = 250;
+                if (distance < maxDist) {
+                    const force = (maxDist - distance) / maxDist;
+                    this.x -= (dx / distance) * force * this.density;
+                    this.y -= (dy / distance) * force * this.density;
+                } else {
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 30;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 30;
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < (width * height) / 10000; i++) particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        resize();
+        animate();
+
+        // Form submission
+        const form = document.getElementById('applicationForm');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // ⚠️ REPLACE THIS WITH YOUR DISCORD WEBHOOK URL ⚠️
+            const WEBHOOK_URL = 'https://discord.com/api/webhooks/1460462913192988716/v8aI7eW9YoX-3L6nl3ozpSFr6FKjEBEW90zVAYu8B5Q142-YQiVgswzzOtae4792ALX_';
+
+            if (WEBHOOK_URL === 'YOUR_DISCORD_WEBHOOK_URL_HERE') {
+                alert('Please configure the Discord webhook URL in apply.html');
+                return;
+            }
+
+            const formData = new FormData(form);
+            const data = {};
+
+            // Get text inputs
+            data.discord = formData.get('discord');
+            data.age = formData.get('age');
+            data.portfolio = formData.get('portfolio');
+            data.experience = formData.get('experience');
+            data.about = formData.get('about');
+
+            // Get checkboxes
+            data.payment = formData.getAll('payment').join(', ') || 'None selected';
+            data.software = formData.getAll('software').join(', ') || 'None selected';
+
+            // Validate at least one payment method
+            if (data.payment === 'None selected') {
+                alert('Please select at least one payment method');
+                return;
+            }
+
+            // Validate at least one software
+            if (data.software === 'None selected') {
+                alert('Please select at least one software');
+                return;
+            }
+
+            // Create Discord embed
+            const embed = {
+                embeds: [{
+                    title: '📝 New Editor Application',
+                    color: 0x5865F2,
+                    fields: [
+                        { name: '👤 Discord', value: data.discord, inline: true },
+                        { name: '🎂 Age', value: data.age, inline: true },
+                        { name: '💳 Payment Methods', value: data.payment, inline: false },
+                        { name: '🎬 Portfolio', value: data.portfolio, inline: false },
+                        { name: '🛠️ Software', value: data.software, inline: false },
+                        { name: '📅 Experience', value: data.experience, inline: true },
+                        { name: '📄 About', value: data.about.substring(0, 1024), inline: false }
+                    ],
+                    timestamp: new Date().toISOString(),
+                    footer: { text: 'VYBE Studios Applications' }
+                }]
+            };
+
+            // Disable submit button
+            const submitBtn = form.querySelector('.submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(embed)
+                });
+
+                if (response.ok) {
+                    successMessage.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                    form.reset();
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 5000);
+                } else {
+                    throw new Error('Webhook failed');
+                }
+            } catch (error) {
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                console.error('Submission error:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Application';
+            }
+        });
+    </script>
+</body>
+
+</html>

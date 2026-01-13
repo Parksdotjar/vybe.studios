@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About — VYBE Studios</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Playfair+Display:wght@500;600&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="wrap nav-inner">
+            <a class="brand" href="index.html">
+                <img src="logo_new.png" alt="Vybe Studios Logo">
+                <b>VYBE Studios</b>
+            </a>
+
+            <div class="nav-links">
+                <a href="index.html#work">Work</a>
+                <a href="index.html#services">Services</a>
+                <a href="index.html#pricing">Pricing</a>
+                <a href="https://discord.vybestudios.org" target="_blank">Contact</a>
+            </div>
+
+            <a class="btn btn-primary btn-rainbow" href="https://discord.vybestudios.org" target="_blank">
+                <span style="position:relative; z-index:2;">Book a promo</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="hero" style="min-height: auto; padding-top: 120px; padding-bottom: 80px; align-items: flex-start;">
+        <div class="wrap" style="text-align: center;">
+            <h1 class="reveal">The Team</h1>
+            <p class="reveal delay-1" style="color: var(--text-dim); margin-bottom: 60px;">
+                The minds behind the magic. Click on a profile to learn more.
+            </p>
+
+            <!-- Founder Section -->
+            <div class="team-section reveal delay-2">
+                <div class="team-member founder" onclick="toggleBio(this)">
+                    <div class="member-avatar">
+                        <div class="avatar-placeholder" style="background: linear-gradient(135deg, #ffd700, #ffaa00);">P
+                        </div>
+                        <div class="discord-status online" title="Online"></div>
+                    </div>
+                    <h3>Parks</h3>
+                    <p class="role">Founder</p>
+                    <div class="member-bio">
+                        <p>The visionary behind VYBE. Specialized in creative direction and high-end motion graphics.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Owners Section -->
+            <div class="team-grid reveal delay-3">
+                <div class="team-member" onclick="toggleBio(this)">
+                    <div class="member-avatar">
+                        <div class="avatar-placeholder" style="background: linear-gradient(135deg, #00c6ff, #0072ff);">K
+                        </div>
+                        <div class="discord-status online" title="Online"></div>
+                    </div>
+                    <h3>Kdesa</h3>
+                    <p class="role">Owner</p>
+                    <div class="member-bio">
+                        <p>Operations lead and edit specialist. Ensures every project meets the deadline and the quality
+                            standard.</p>
+                    </div>
+                </div>
+
+                <div class="team-member" onclick="toggleBio(this)">
+                    <div class="member-avatar">
+                        <div class="avatar-placeholder" style="background: linear-gradient(135deg, #ff00cc, #333399);">K
+                        </div>
+                        <div class="discord-status dnd" title="Do Not Disturb"></div>
+                    </div>
+                    <h3>Karsten</h3>
+                    <p class="role">Owner</p>
+                    <div class="member-bio">
+                        <p>Small time developer and editor for VYBE.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="wrap footer-inner reveal">
+            <div class="brand">
+                <img src="logo_new.png" alt="Vybe Logo" style="height:30px;">
+                <b>VYBE Studios</b>
+            </div>
+
+            <div>
+                <a href="index.html">Home</a>
+                <span style="margin:0 10px;">•</span>
+                <a href="https://discord.vybestudios.org" target="_blank">Discord</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
