@@ -26,6 +26,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. SPA Navigation & Smooth Anchors
     const views = document.querySelectorAll('.view-section');
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    const toggleMenu = () => {
+        menuToggle.classList.toggle('active');
+        mobileNav.classList.toggle('active');
+        document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+    };
+
+    if (menuToggle) {
+        menuToggle.addEventListener('click', toggleMenu);
+    }
+
+    // Close menu when clicking a link
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (mobileNav.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+    });
 
     const switchView = (viewName) => {
         const targetId = `view-${viewName}`;
