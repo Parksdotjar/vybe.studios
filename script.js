@@ -1,6 +1,7 @@
 /* script.js */
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 VYBE Studios SPA Initialized');
     // 1. Smooth Scroll (Lenis) with Safety Guard
     let lenis;
     try {
