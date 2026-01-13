@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vision - VYBE Studios</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo_new.png">
+    <link rel="shortcut icon" type="image/png" href="logo_new.png">
+    <link rel="apple-touch-icon" href="logo_new.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .info-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 20px 60px;
+        }
+
+        .info-panel {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .info-panel h1 {
+            font-size: 2.2rem;
+            margin: 0 0 14px 0;
+            text-align: center;
+        }
+
+        .info-panel .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
+        }
+
+        .info-copy {
+            display: grid;
+            gap: 18px;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .info-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px) saturate(140%);
+            margin: 0 auto 24px;
+        }
+
+        .info-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="info-container">
+        <div class="info-panel">
+            <div class="info-pill">VYBE Studios Vision</div>
+            <h1>Built to make creators feel supported</h1>
+            <p class="subtitle">All the help you need, in one easy place.</p>
+
+            <div class="info-copy">
+                <p>
+                    VYBE Studios exists to give creators a clean, easy space to get the help they need in one place —
+                    without the headaches. We focus on fast communication, clear timelines, and a process that respects
+                    your time.
+                </p>
+                <p>
+                    Our vision is simple: deliver high-quality creative services at fair prices, so creators can stay
+                    focused on building their communities while we handle the polish. No confusing packages, no bloated
+                    rates, just real value and results.
+                </p>
+                <p>
+                    As we grow, we want to be the hub where creators can find everything they need — promos, edits, and
+                    support — all under one roof. That is the vibe we are building.
+                </p>
+            </div>
+
+            <div class="info-actions">
+                <a class="btn" href="index.html">Back to Home</a>
+                <a class="btn btn-rainbow" href="portfolio.html">
+                    <span style="position:relative; z-index:2;">View Portfolio</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize background
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+        const mouse = { x: -1000, y: -1000 };
+
+        const resize = () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            initParticles();
+        };
+
+        window.addEventListener('resize', resize);
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        class Particle {
+            constructor() {
+                this.reset();
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+            }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 30) + 1;
+                this.alpha = Math.random() * 0.4 + 0.05;
+            }
+            update() {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let maxDist = 250;
+                if (distance < maxDist) {
+                    const force = (maxDist - distance) / maxDist;
+                    this.x -= (dx / distance) * force * this.density;
+                    this.y -= (dy / distance) * force * this.density;
+                } else {
+                    if (this.x !== this.baseX) this.x -= (this.x - this.baseX) / 30;
+                    if (this.y !== this.baseY) this.y -= (this.y - this.baseY) / 30;
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < (width * height) / 10000; i++) particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        resize();
+        animate();
+    </script>
+</body>
+
+</html>
