@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply to VYBE Studios</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #050505;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .application-container {
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            margin-bottom: 24px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+        }
+
+        /* Mobile fixes for standalone page */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
+            #view-apply .application-form {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body id="view-apply">
+    <div class="application-container">
+        <a href="index.html" class="back-btn">← Back to Site</a>
+
+        <form class="application-form" id="applicationFormStandalone">
+            <h1>Editor Application</h1>
+            <p class="subtitle">Join the VYBE Studios team</p>
+
+            <div class="form-group">
+                <label>Discord Username <span class="required">*</span></label>
+                <input type="text" name="discord" placeholder="username#0000" required>
+            </div>
+
+            <div class="form-group">
+                <label>Age <span class="required">*</span></label>
+                <input type="number" name="age" min="13" max="99" placeholder="18" required>
+            </div>
+
+            <div class="form-group">
+                <label>Payment Methods <span class="required">*</span></label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="payment" value="PayPal">
+                        <span>PayPal</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="payment" value="Venmo">
+                        <span>Venmo</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="payment" value="CashApp">
+                        <span>CashApp</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="payment" value="Zelle">
+                        <span>Zelle</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="payment" value="Other">
+                        <span>Other</span></label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Portfolio / Video Link <span class="required">*</span></label>
+                <input type="url" name="portfolio" placeholder="https://youtube.com/..." required>
+            </div>
+
+            <div class="form-group">
+                <label>Software Used <span class="required">*</span></label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="software" value="After Effects">
+                        <span>After Effects</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="software" value="Premiere Pro">
+                        <span>Premiere Pro</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="software" value="DaVinci Resolve">
+                        <span>DaVinci Resolve</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="software" value="Final Cut Pro">
+                        <span>Final Cut Pro</span></label>
+                    <label class="checkbox-item"><input type="checkbox" name="software" value="Other">
+                        <span>Other</span></label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>How long have you been using this software? <span class="required">*</span></label>
+                <textarea name="experience" placeholder="e.g. 3 years of After Effects, 2 years of Premiere..."
+                    required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>About Yourself <span class="required">*</span></label>
+                <textarea name="about" placeholder="Tell us about your editing style..." required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submit-btn-standalone">Submit Application</button>
+
+            <div class="success-message" id="successMsg">✓ Application submitted successfully!</div>
+            <div class="error-message" id="errorMsg">✗ Failed to submit application.</div>
+        </form>
+    </div>
+
+    <script>
+        const appForm = document.getElementById('applicationFormStandalone');
+        if (appForm) {
+            appForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitBtn = document.getElementById('submit-btn-standalone');
+                const successMsg = document.getElementById('successMsg');
+                const errorMsg = document.getElementById('errorMsg');
+
+                const WEBHOOK_URL = 'https://discord.com/api/webhooks/1460462913192988716/v8aI7eW9YoX-3L6nl3ozpSFr6FKjEBEW90zVAYu8B5Q142-YQiVgswzzOtae4792ALX_';
+
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'Submitting...';
+
+                const formData = new FormData(appForm);
+                const data = {
+                    discord: formData.get('discord'),
+                    age: formData.get('age'),
+                    portfolio: formData.get('portfolio'),
+                    experience: formData.get('experience'),
+                    about: formData.get('about'),
+                    payment: Array.from(formData.getAll('payment')).join(', '),
+                    software: Array.from(formData.getAll('software')).join(', ')
+                };
+
+                const embed = {
+                    title: 'New Editor Application',
+                    color: 0x8f6bff,
+                    fields: [
+                        { name: 'Discord', value: data.discord || 'N/A', inline: true },
+                        { name: 'Age', value: data.age || 'N/A', inline: true },
+                        { name: 'Payment', value: data.payment || 'N/A', inline: false },
+                        { name: 'Portfolio', value: data.portfolio || 'N/A', inline: false },
+                        { name: 'Software', value: data.software || 'N/A', inline: false },
+                        { name: 'Experience', value: data.experience || 'N/A', inline: false },
+                        { name: 'About', value: data.about || 'N/A', inline: false }
+                    ],
+                    timestamp: new Date().toISOString()
+                };
+
+                try {
+                    const response = await fetch(WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ embeds: [embed] })
+                    });
+
+                    if (response.ok) {
+                        successMsg.style.display = 'block';
+                        appForm.reset();
+                    } else {
+                        throw new Error('Failed');
+                    }
+                } catch (err) {
+                    errorMsg.style.display = 'block';
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = 'Submit Application';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
