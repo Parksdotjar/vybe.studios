@@ -25,9 +25,19 @@
 
   <!-- SPLASH SCREEN -->
   <div id="splash">
+    <div class="warp-backdrop" aria-hidden="true">
+      <div class="warp-stars"></div>
+      <div class="warp-tunnel"></div>
+      <div class="warp-streaks"></div>
+    </div>
     <div class="splash-content">
       <img src="logo_new.png" alt="Vybe Intro" class="splash-logo">
-      <div class="loader-line"></div>
+      <div class="splash-sublevel">
+        <span class="splash-status">Initializing hyper tube</span>
+        <div class="loader-track">
+          <div class="loader-line"></div>
+        </div>
+      </div>
       <div id="splash-quote"></div>
       <button class="enter-btn" id="enter-site-btn" type="button">Enter Vybe Studios</button>
     </div>

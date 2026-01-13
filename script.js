@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (splash) {
             splash.classList.add('ready');
         }
-    }, 3000); // 3 seconds to read quote
+    }, 2600); // short wait for the loading cue
 
     // 4. Video Start Time
     const heroVideo = document.querySelector('.hero-video');
@@ -242,14 +242,17 @@ document.addEventListener('DOMContentLoaded', () => {
         enterBtn.addEventListener('click', () => {
             if (enterBtn.disabled) return;
             enterBtn.disabled = true;
-            splash.classList.add('exit');
+            splash.classList.add('warp-jump');
             if (splashLogo) splashLogo.classList.add('enter-anim');
-            document.body.classList.remove('site-hidden');
-            document.body.classList.add('site-ready');
             startMusic();
             setTimeout(() => {
+                document.body.classList.remove('site-hidden');
+                document.body.classList.add('site-ready');
+                splash.classList.add('exit');
+            }, 650);
+            setTimeout(() => {
                 splash.style.display = 'none';
-            }, 800);
+            }, 1300);
         });
     } else {
         document.body.classList.remove('site-hidden');
