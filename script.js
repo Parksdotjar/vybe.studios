@@ -1,18 +1,27 @@
 /* script.js */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Smooth Scroll (Lenis)
-    const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-    });
+    // 1. Smooth Scroll (Lenis) with Safety Guard
+    let lenis;
+    try {
+        if (typeof Lenis !== 'undefined') {
+            lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                smoothWheel: true,
+            });
 
-    function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
+            function raf(time) {
+                if (lenis) lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+        } else {
+            console.warn('Lenis library not loaded. Falling back to native scroll.');
+        }
+    } catch (e) {
+        console.error('Lenis initialization failed:', e);
     }
-    requestAnimationFrame(raf);
 
     // 2. SPA Navigation & Smooth Anchors
     const views = document.querySelectorAll('.view-section');
@@ -33,7 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (found) {
-            lenis.scrollTo(0, { immediate: true });
+            if (lenis) {
+                lenis.scrollTo(0, { immediate: true });
+            } else {
+                window.scrollTo(0, 0);
+            }
             // Re-run intersection observer check for the new view
             document.querySelectorAll('.reveal').forEach(el => {
                 if (!el.classList.contains('active')) {
@@ -63,13 +76,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Wait for view swap then scroll
                 setTimeout(() => {
                     const scrollTarget = document.querySelector(href);
-                    if (scrollTarget) lenis.scrollTo(scrollTarget);
+                    if (scrollTarget) {
+                        if (lenis) lenis.scrollTo(scrollTarget);
+                        else scrollTarget.scrollIntoView({ behavior: 'smooth' });
+                    }
                 }, 100);
             } else {
                 // Already on home, just smooth scroll
                 e.preventDefault();
                 const scrollTarget = document.querySelector(href);
-                if (scrollTarget) lenis.scrollTo(scrollTarget);
+                if (scrollTarget) {
+                    if (lenis) lenis.scrollTo(scrollTarget);
+                    else scrollTarget.scrollIntoView({ behavior: 'smooth' });
+                }
             }
         }
     });
@@ -78,7 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href="#top"]').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            lenis.scrollTo(0);
+            if (lenis) lenis.scrollTo(0);
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     });
 
