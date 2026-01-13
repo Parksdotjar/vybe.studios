@@ -527,6 +527,26 @@ nav {
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
 }
 
+.brand-x {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+}
+
+.brand-creator,
+.brand-coaster {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.brand-creator {
+    background-image: linear-gradient(135deg, #ff3b3b, #ff7a59);
+}
+
+.brand-coaster {
+    background-image: linear-gradient(135deg, #4da3ff, #6ee7ff);
+}
+
 .nav-links {
     display: flex;
     gap: 32px;
