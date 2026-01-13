@@ -153,17 +153,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const pauseBtn = document.getElementById('pause-btn');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
+    const prevBtnMini = document.getElementById('prev-btn-mini');
+    const nextBtnMini = document.getElementById('next-btn-mini');
     const togglePlayerBtn = document.getElementById('toggle-player-btn');
     const playerExpanded = document.querySelector('.player-expanded');
     const playerUI = document.getElementById('player-ui');
     const trackNameEl = document.getElementById('track-name');
-    const artistNameEl = document.getElementById('artist-name');
+    const nowLabelEl = document.getElementById('now-label');
     const disk = document.querySelector('.disk');
 
     const playlist = [
-        { name: "VYBE", artist: "A Masterpiece", file: "songs/music.mp3" },
-    ];
+        "songs/music.mp3",
+        "songs/Presidential.mp3",
+    ]; // Add more mp3 filenames here to match the songs folder.
     let currentTrackIndex = 0;
+    let audioCtx = null;
+    let analyser = null;
+    let dataArray = null;
+    let beatRaf = null;
 
     // Volume logic
     const volContainer = document.getElementById('vol-slider-container');
@@ -196,15 +203,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    const formatTrackName = (filePath) => {
+        const name = filePath.split('/').pop() || filePath;
+        return name.replace(/\.mp3$/i, '').replace(/[_-]+/g, ' ').trim() || 'Untitled';
+    };
+
     const loadTrack = (index) => {
         if (!audio) return;
         if (index < 0) index = playlist.length - 1;
         if (index >= playlist.length) index = 0;
         currentTrackIndex = index;
-        const track = playlist[index];
-        audio.src = track.file;
-        if (trackNameEl) trackNameEl.textContent = track.name;
-        if (artistNameEl) artistNameEl.textContent = track.artist;
+        const trackFile = playlist[index];
+        audio.src = trackFile;
+        if (trackNameEl) trackNameEl.textContent = formatTrackName(trackFile);
+        if (nowLabelEl) nowLabelEl.textContent = 'Now playing';
         if (playBtn && playBtn.classList.contains('hidden')) audio.play().catch(e => { });
     };
     if (audio) {
@@ -216,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 pauseBtn.classList.remove('hidden');
                 disk.classList.add('playing');
                 disk.style.animationPlayState = 'running';
+                startBeatGlow();
             }).catch(() => {
                 // Autoplay blocked - wait for interaction
                 const unlockAudio = () => {
@@ -224,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         pauseBtn.classList.remove('hidden');
                         disk.classList.add('playing');
                         disk.style.animationPlayState = 'running';
+                        startBeatGlow();
                     });
                     document.removeEventListener('click', unlockAudio);
                     document.removeEventListener('keydown', unlockAudio);
@@ -253,23 +267,70 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('site-ready');
     }
 
+    const startBeatGlow = () => {
+        if (!audio || !playerUI) return;
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const source = audioCtx.createMediaElementSource(audio);
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 256;
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
+            source.connect(analyser);
+            analyser.connect(audioCtx.destination);
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume().catch(() => { });
+        }
+        const tick = () => {
+            if (!analyser || audio.paused) {
+                playerUI.classList.remove('beat');
+                beatRaf = null;
+                return;
+            }
+            analyser.getByteFrequencyData(dataArray);
+            let bassSum = 0;
+            const bassCount = 10;
+            for (let i = 0; i < bassCount; i += 1) bassSum += dataArray[i] || 0;
+            const bass = bassSum / (bassCount * 255);
+            if (bass > 0.18) {
+                playerUI.classList.add('beat');
+            } else {
+                playerUI.classList.remove('beat');
+            }
+            beatRaf = requestAnimationFrame(tick);
+        };
+        if (!beatRaf) beatRaf = requestAnimationFrame(tick);
+    };
+
     const togglePlay = () => {
         if (!audio) return;
         if (audio.paused) {
             audio.play().then(() => {
                 playBtn.classList.add('hidden'); pauseBtn.classList.remove('hidden');
                 disk.classList.add('playing'); disk.style.animationPlayState = 'running';
+                startBeatGlow();
             }).catch(console.error);
         } else {
             audio.pause();
             playBtn.classList.remove('hidden'); pauseBtn.classList.add('hidden');
             disk.classList.remove('playing'); disk.style.animationPlayState = 'paused';
+            if (playerUI) playerUI.classList.remove('beat');
         }
     };
     if (playBtn) playBtn.addEventListener('click', togglePlay);
     if (pauseBtn) pauseBtn.addEventListener('click', togglePlay);
-    if (nextBtn) nextBtn.addEventListener('click', () => { loadTrack(currentTrackIndex + 1); if (audio.paused) togglePlay(); else audio.play(); });
-    if (prevBtn) prevBtn.addEventListener('click', () => { loadTrack(currentTrackIndex - 1); if (audio.paused) togglePlay(); else audio.play(); });
+    const goNext = () => { loadTrack(currentTrackIndex + 1); if (audio.paused) togglePlay(); else audio.play(); };
+    const goPrev = () => { loadTrack(currentTrackIndex - 1); if (audio.paused) togglePlay(); else audio.play(); };
+    if (nextBtn) nextBtn.addEventListener('click', goNext);
+    if (prevBtn) prevBtn.addEventListener('click', goPrev);
+    if (nextBtnMini) nextBtnMini.addEventListener('click', goNext);
+    if (prevBtnMini) prevBtnMini.addEventListener('click', goPrev);
+    if (audio) {
+        audio.addEventListener('ended', () => {
+            loadTrack(currentTrackIndex + 1);
+            audio.play().catch(() => { });
+        });
+    }
 
     // Expand/Collapse
     let isExpanded = false;

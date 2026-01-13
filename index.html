@@ -37,13 +37,24 @@
 
   <!-- MUSIC PLAYER (Expandable & Draggable) -->
   <div class="music-player" id="player-ui">
+    <div class="player-glow" aria-hidden="true"></div>
     <div class="player-top">
       <div class="disk spinning"></div>
       <div class="track-info">
         <span class="track-name" id="track-name">VYBE</span>
-        <span class="artist-name" id="artist-name">A Masterpiece</span>
+        <span class="now-label" id="now-label">Now playing</span>
       </div>
       <div class="mini-controls" style="z-index:10;">
+        <button id="prev-btn-mini" aria-label="Previous Track">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
+          </svg>
+        </button>
+        <button id="next-btn-mini" aria-label="Next Track">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
+          </svg>
+        </button>
         <button id="toggle-player-btn" aria-label="Expand Player">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
@@ -54,7 +65,7 @@
 
     <div class="player-expanded hidden">
       <div class="controls-row">
-        <button id="prev-btn" aria-label="Previous">
+        <button id="prev-btn" aria-label="Previous Track">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
           </svg>
@@ -69,7 +80,7 @@
             <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
           </svg>
         </button>
-        <button id="next-btn" aria-label="Next">
+        <button id="next-btn" aria-label="Next Track">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z" />
           </svg>
