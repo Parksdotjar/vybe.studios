@@ -15,60 +15,70 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(raf);
 
     // 2. SPA Navigation & Smooth Anchors
-    const viewHome = document.getElementById('view-home');
-    const viewAbout = document.getElementById('view-about');
+    const views = document.querySelectorAll('.view-section');
 
     const switchView = (viewName) => {
-        // Simple toggle
-        if (viewName === 'about') {
-            viewHome.classList.add('hidden');
-            viewHome.classList.remove('active');
-            viewAbout.classList.remove('hidden');
-            viewAbout.classList.add('active');
+        const targetId = `view-${viewName}`;
+        let found = false;
+
+        views.forEach(v => {
+            if (v.id === targetId) {
+                v.classList.remove('hidden');
+                v.classList.add('active');
+                found = true;
+            } else {
+                v.classList.add('hidden');
+                v.classList.remove('active');
+            }
+        });
+
+        if (found) {
             lenis.scrollTo(0, { immediate: true });
-        } else {
-            viewAbout.classList.add('hidden');
-            viewAbout.classList.remove('active');
-            viewHome.classList.remove('hidden');
-            viewHome.classList.add('active');
-            // If switching to home, we might want to stay at top or not. 
-            // Usually scroll to top feels best for a "page change"
-            lenis.scrollTo(0, { immediate: true });
+            // Re-run intersection observer check for the new view
+            document.querySelectorAll('.reveal').forEach(el => {
+                if (!el.classList.contains('active')) {
+                    observer.observe(el);
+                }
+            });
         }
     };
 
-    // Click Handler for Links
-    document.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function (e) {
-            const dataLink = this.getAttribute('data-link'); // 'home', 'about', 'section'
-            const href = this.getAttribute('href');
+    // Click Handler for all data-link elements
+    document.addEventListener('click', (e) => {
+        const target = e.target.closest('[data-link]');
+        if (!target) return;
 
-            if (dataLink === 'about') {
-                e.preventDefault();
-                switchView('about');
-            } else if (dataLink === 'home') {
+        const dataLink = target.getAttribute('data-link');
+        const href = target.getAttribute('href');
+
+        if (dataLink && dataLink !== 'section') {
+            e.preventDefault();
+            switchView(dataLink);
+        } else if (dataLink === 'section') {
+            // If not on Home page, go Home first, then scroll
+            const homeView = document.getElementById('view-home');
+            if (!homeView.classList.contains('active')) {
                 e.preventDefault();
                 switchView('home');
-            } else if (dataLink === 'section') {
-                // If on About page, go Home first, then scroll
-                if (viewAbout.classList.contains('active')) {
-                    e.preventDefault();
-                    switchView('home');
-                    // Wait for view swap then scroll
-                    setTimeout(() => {
-                        const target = document.querySelector(href);
-                        if (target) lenis.scrollTo(target);
-                    }, 100);
-                } else {
-                    // Already on home, just smooth scroll
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) lenis.scrollTo(target);
-                }
-            } else if (href === '#top') {
+                // Wait for view swap then scroll
+                setTimeout(() => {
+                    const scrollTarget = document.querySelector(href);
+                    if (scrollTarget) lenis.scrollTo(scrollTarget);
+                }, 100);
+            } else {
+                // Already on home, just smooth scroll
                 e.preventDefault();
-                lenis.scrollTo(0);
+                const scrollTarget = document.querySelector(href);
+                if (scrollTarget) lenis.scrollTo(scrollTarget);
             }
+        }
+    });
+
+    // Special case for #top link (Keep for legacy support or update to data-link)
+    document.querySelectorAll('a[href="#top"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            lenis.scrollTo(0);
         });
     });
 
@@ -342,11 +352,94 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Portfolio Video Hover Autoplay
+    document.querySelectorAll('.portfolio-card').forEach(card => {
+        const video = card.querySelector('video');
+        if (video) {
+            card.addEventListener('mouseenter', () => {
+                video.play().catch(() => { });
+            });
+            card.addEventListener('mouseleave', () => {
+                video.pause();
+                video.currentTime = 0;
+            });
+        }
+    });
+
+    // 7. Form submission (SPA)
+    const appForm = document.getElementById('applicationForm');
+    if (appForm) {
+        appForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const successMsg = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+            const submitBtn = document.getElementById('submit-app-btn');
+
+            const WEBHOOK_URL = 'https://discord.com/api/webhooks/1460462913192988716/v8aI7eW9YoX-3L6nl3ozpSFr6FKjEBEW90zVAYu8B5Q142-YQiVgswzzOtae4792ALX_';
+
+            const formData = new FormData(appForm);
+            const data = {};
+            data.discord = formData.get('discord');
+            data.age = formData.get('age');
+            data.portfolio = formData.get('portfolio');
+            data.experience = formData.get('experience');
+            data.about = formData.get('about');
+            data.payment = formData.getAll('payment').join(', ') || 'None selected';
+            data.software = formData.getAll('software').join(', ') || 'None selected';
+
+            if (data.payment === 'None selected' || data.software === 'None selected') {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const embed = {
+                embeds: [{
+                    title: '📝 New Editor Application',
+                    color: 0x5865F2,
+                    fields: [
+                        { name: '👤 Discord', value: data.discord, inline: true },
+                        { name: '🎂 Age', value: data.age, inline: true },
+                        { name: '💳 Payment Methods', value: data.payment, inline: false },
+                        { name: '🎬 Portfolio', value: data.portfolio, inline: false },
+                        { name: '🛠️ Software', value: data.software, inline: false },
+                        { name: '📅 Experience', value: data.experience, inline: true },
+                        { name: '📄 About', value: data.about.substring(0, 1024), inline: false }
+                    ],
+                    timestamp: new Date().toISOString(),
+                    footer: { text: 'VYBE Studios SPA' }
+                }]
+            };
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(embed)
+                });
+
+                if (response.ok) {
+                    successMsg.style.display = 'block';
+                    errorMsg.style.display = 'none';
+                    appForm.reset();
+                    setTimeout(() => { successMsg.style.display = 'none'; }, 5000);
+                } else { throw new Error('Failed'); }
+            } catch (err) {
+                errorMsg.style.display = 'block';
+                successMsg.style.display = 'none';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Application';
+            }
+        });
+    }
 });
 
-// Re-declare initParticles (abbreviated for brevity as it's same logic)
+// Re-declare initParticles
 function initReactiveBackground() {
-    // ... Existing particle logic ...
     const canvas = document.getElementById('bg-canvas') || document.createElement('canvas');
     if (!document.body.contains(canvas)) { canvas.id = 'bg-canvas'; document.body.prepend(canvas); }
     const ctx = canvas.getContext('2d');
@@ -417,4 +510,4 @@ function initReactiveBackground() {
 }
 
 // Helper for team toggle (exposed)
-function toggleBio(el) { /* Handled in event listener above now for better scope access or can leave here */ }
+function toggleBio(el) { /* Handled in event listener */ }

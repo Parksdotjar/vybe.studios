@@ -918,10 +918,361 @@ footer {
     }
 
     .nav-links {
-        display: none;
+        /* display: none; */
+        /* Keeping nav links visible */
     }
 
     .hero-visual {
         min-height: 300px;
     }
+}
+
+/* Application View Styles */
+#view-apply .application-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px 40px;
+}
+
+#view-apply .application-form {
+    max-width: 700px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+#view-apply .application-form h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-align: center;
+    background: linear-gradient(to bottom, #fff, #aaa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#view-apply .application-form .subtitle {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 40px;
+}
+
+#view-apply .form-group {
+    margin-bottom: 24px;
+}
+
+#view-apply .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+#view-apply .form-group label .required {
+    color: #ff6b6b;
+}
+
+#view-apply .form-group input[type="text"],
+#view-apply .form-group input[type="number"],
+#view-apply .form-group input[type="url"],
+#view-apply .form-group select,
+#view-apply .form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+#view-apply .form-group input:focus,
+#view-apply .form-group select:focus,
+#view-apply .form-group textarea:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+#view-apply .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+#view-apply .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+#view-apply .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#view-apply .checkbox-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+#view-apply .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 32px;
+}
+
+#view-apply .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.3);
+}
+
+#view-apply .submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#view-apply .success-message,
+#view-apply .error-message {
+    padding: 16px;
+    border-radius: 12px;
+    margin-top: 20px;
+    text-align: center;
+    display: none;
+}
+
+#view-apply .success-message {
+    background: rgba(76, 175, 80, 0.2);
+    border: 1px solid rgba(76, 175, 80, 0.5);
+    color: #4caf50;
+}
+
+#view-apply .error-message {
+    background: rgba(244, 67, 54, 0.2);
+    border: 1px solid rgba(244, 67, 54, 0.5);
+    color: #f44336;
+}
+
+/* Branding Collaboration Styles */
+.brand-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.brand-collab {
+    font-size: 1em;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.gradient-red {
+    background: linear-gradient(90deg, #ff6b35, #ff4500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+}
+
+.gradient-blue {
+    background: linear-gradient(90deg, #00a8ff, #0080ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+}
+
+/* Portfolio Grid (Updated for Side-by-Side) */
+.portfolio-grid-featured,
+.portfolio-grid-full {
+    display: grid;
+    /* Auto-fit with minmax(300px) ensures 2 or 3 cards fit side-by-side */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+}
+
+/* Portfolio Card */
+.portfolio-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    /* Indicates it is clickable */
+}
+
+.portfolio-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(143, 107, 255, 0.15);
+}
+
+/* Video Wrapper */
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+}
+
+.video-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.portfolio-card:hover .video-wrapper video {
+    transform: scale(1.05);
+}
+
+.video-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.portfolio-card:hover .video-overlay {
+    opacity: 0;
+}
+
+.video-overlay svg {
+    color: white;
+    opacity: 0.9;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+/* Portfolio Card Info */
+.portfolio-card-info {
+    padding: 24px;
+}
+
+.portfolio-card-info h4 {
+    font-size: 1.2rem;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
+.portfolio-card-info p {
+    color: var(--text-dim);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    .portfolio-grid-featured,
+    .portfolio-grid-full {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .brand-collab {
+        display: none;
+    }
+}
+
+/* --- LIGHTBOX / POPUP STYLES --- */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.lightbox.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.lightbox-content {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    aspect-ratio: 16 / 9;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    background: #000;
+    transform: scale(0.9);
+    /* Uses your existing smooth ease variable */
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lightbox.active .lightbox-content {
+    transform: scale(1);
+}
+
+.lightbox-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+    outline: none;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: -45px;
+    right: 0;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    font-family: var(--font-body);
+}
+
+.lightbox-close:hover {
+    opacity: 1;
+    transform: scale(1.1);
 }
