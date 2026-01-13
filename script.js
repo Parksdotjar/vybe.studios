@@ -76,6 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const splash = document.getElementById('splash');
     const enterBtn = document.getElementById('enter-site-btn');
     const splashLogo = document.querySelector('.splash-logo');
+    const warpCanvas = document.getElementById('warp-canvas');
+    let stopWarp = () => { };
     let startMusic = () => { };
     // Quotes Logic (Inline to avoid CORS issues on local file://)
     const quoteEl = document.getElementById('splash-quote');
@@ -113,6 +115,94 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             quoteEl.style.opacity = '1';
         }, 500);
+    }
+
+    // Warp tunnel canvas
+    if (splash && warpCanvas) {
+        const ctx = warpCanvas.getContext('2d');
+        let w = 0;
+        let h = 0;
+        let running = true;
+        let speed = 1.4;
+        let targetSpeed = 1.4;
+        const starCount = 420;
+        const stars = [];
+
+        const resizeWarp = () => {
+            w = warpCanvas.width = window.innerWidth;
+            h = warpCanvas.height = window.innerHeight;
+        };
+
+        const makeStar = () => ({
+            x: (Math.random() - 0.5) * w,
+            y: (Math.random() - 0.5) * h,
+            z: Math.random() * w,
+            size: Math.random() * 1.4 + 0.4,
+            hue: Math.random() < 0.2 ? 270 : 0
+        });
+
+        const resetStar = (s) => {
+            s.x = (Math.random() - 0.5) * w;
+            s.y = (Math.random() - 0.5) * h;
+            s.z = w;
+            s.size = Math.random() * 1.4 + 0.4;
+            s.hue = Math.random() < 0.2 ? 270 : 0;
+        };
+
+        const initStars = () => {
+            stars.length = 0;
+            for (let i = 0; i < starCount; i++) stars.push(makeStar());
+        };
+
+        const ease = (current, next, amt = 0.04) => current + (next - current) * amt;
+
+        const drawWarp = () => {
+            if (!running) return;
+            speed = ease(speed, targetSpeed, 0.06);
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.fillRect(0, 0, w, h);
+            const cx = w / 2;
+            const cy = h / 2;
+
+            for (let i = 0; i < stars.length; i++) {
+                const s = stars[i];
+                s.z -= speed * 16;
+                if (s.z <= 1) resetStar(s);
+                const k = 128 / s.z;
+                const px = s.x * k + cx;
+                const py = s.y * k + cy;
+                const radius = s.size * (1 - s.z / w) * 2.2;
+
+                if (px < 0 || px > w || py < 0 || py > h) {
+                    resetStar(s);
+                    continue;
+                }
+
+                ctx.beginPath();
+                ctx.fillStyle = s.hue === 270 ? 'rgba(143,107,255,0.9)' : 'rgba(255,255,255,0.8)';
+                ctx.arc(px, py, Math.max(0.2, radius), 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            requestAnimationFrame(drawWarp);
+        };
+
+        const onResize = () => {
+            resizeWarp();
+            initStars();
+        };
+
+        window.addEventListener('resize', onResize);
+        onResize();
+        drawWarp();
+
+        stopWarp = () => {
+            running = false;
+        };
+
+        splash.addEventListener('warpstart', () => {
+            targetSpeed = 8.5;
+        });
     }
 
     // Reveal enter button after loading
@@ -244,6 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
             enterBtn.disabled = true;
             splash.classList.add('warp-jump');
             if (splashLogo) splashLogo.classList.add('enter-anim');
+            splash.dispatchEvent(new Event('warpstart'));
             startMusic();
             setTimeout(() => {
                 document.body.classList.remove('site-hidden');
@@ -251,6 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 splash.classList.add('exit');
             }, 650);
             setTimeout(() => {
+                stopWarp();
                 splash.style.display = 'none';
             }, 1300);
         });
