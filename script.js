@@ -217,7 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const disk = document.querySelector('.disk');
 
     const playlist = [
-        { name: "VYBE", artist: "A Masterpiece", file: "songs/music.mp3" },
+        { name: "VYBE's", artist: "A Masterpiece", file: "songs/music.mp3" },
+        { name: "Presidential", artist: "w trap", file: "songs/music2.mp3" },
     ];
     let currentTrackIndex = 0;
 
