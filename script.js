@@ -378,6 +378,42 @@ document.addEventListener('DOMContentLoaded', () => {
             card.classList.toggle('expanded');
         });
     });
+
+    // Review Modal Logic
+    const reviewCards = document.querySelectorAll('.review-card');
+    const reviewModal = document.getElementById('review-modal');
+    const modalBody = document.getElementById('modal-body');
+    const modalClose = document.getElementById('modal-close');
+    const modalOverlay = document.getElementById('modal-overlay');
+
+    const openReviewModal = (card) => {
+        // Clone the card content to show in modal
+        const content = card.cloneNode(true);
+        modalBody.innerHTML = '';
+        modalBody.appendChild(content);
+        reviewModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeReviewModal = () => {
+        reviewModal.classList.remove('active');
+        document.body.style.overflow = '';
+    };
+
+    reviewCards.forEach(card => {
+        card.addEventListener('click', () => openReviewModal(card));
+    });
+
+    if (modalClose) modalClose.addEventListener('click', closeReviewModal);
+    if (modalOverlay) modalOverlay.addEventListener('click', closeReviewModal);
+
+    // Escape key to close modal
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && reviewModal.classList.contains('active')) {
+            closeReviewModal();
+        }
+    });
+
     document.querySelectorAll('.team-member').forEach(el => {
         el.addEventListener('click', () => el.classList.toggle('active'));
     });

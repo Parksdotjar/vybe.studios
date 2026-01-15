@@ -241,6 +241,68 @@
         </div>
       </section>
 
+      <!-- CUSTOMER REVIEWS -->
+      <section id="reviews">
+        <div class="wrap">
+          <div style="text-align: center; margin-bottom: 60px;" class="reveal">
+            <h2>Customer Reviews</h2>
+            <p style="color: var(--text-dim); max-width: 600px; margin: 20px auto 0;">
+              What our clients say about their experience working with VYBE Studios.
+            </p>
+          </div>
+
+          <div class="reviews-grid reveal delay-1">
+            <div class="review-card" tabindex="0">
+              <div class="review-header">
+                <div class="review-user">
+                  <div class="review-avatar">S</div>
+                  <div>
+                    <h4 class="review-name">SonicGamer</h4>
+                    <p class="review-meta">Server Owner</p>
+                  </div>
+                </div>
+                <div class="review-stars">★★★★★</div>
+              </div>
+              <p class="review-text">"The promo edit was insane! They really captured the hype of our new season launch.
+                Definitely coming back for more."</p>
+              <span class="tap-hint">Click to enlarge</span>
+            </div>
+
+            <div class="review-card" tabindex="0">
+              <div class="review-header">
+                <div class="review-user">
+                  <div class="review-avatar" style="background: var(--accent-lavender); color: #000;">L</div>
+                  <div>
+                    <h4 class="review-name">LunaDev</h4>
+                    <p class="review-meta">Content Creator</p>
+                  </div>
+                </div>
+                <div class="review-stars">★★★★★</div>
+              </div>
+              <p class="review-text">"Fast turnaround and the quality is top-tier. The motion graphics are exactly what
+                I was looking for."</p>
+              <span class="tap-hint">Click to enlarge</span>
+            </div>
+
+            <div class="review-card" tabindex="0">
+              <div class="review-header">
+                <div class="review-user">
+                  <div class="review-avatar" style="background: var(--accent-purple);">M</div>
+                  <div>
+                    <h4 class="review-name">MineHype</h4>
+                    <p class="review-meta">SMP Manager</p>
+                  </div>
+                </div>
+                <div class="review-stars">★★★★★</div>
+              </div>
+              <p class="review-text">"Professional communication and amazing results. VYBE Studios is the go-to for
+                high-quality Minecraft promos."</p>
+              <span class="tap-hint">Click to enlarge</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- WORK -->
       <section id="work">
         <div class="wrap">
@@ -847,6 +909,17 @@
     </footer>
 
   </div>
+  <!-- REVIEW MODAL -->
+  <div id="review-modal" class="modal">
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div id="modal-body">
+        <!-- Content will be injected via JS -->
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 
