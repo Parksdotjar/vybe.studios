@@ -449,6 +449,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 7. Form submission (SPA)
     const appForm = document.getElementById('applicationForm');
+    const softwareOptions = document.getElementById('softwareOptions');
+
+    const softwarePresets = {
+        'Video Editor': [
+            'After Effects', 'Premiere Pro', 'DaVinci Resolve', 'Final Cut Pro', 'Sony Vegas', 'Other'
+        ],
+        'Thumbnail Designer': [
+            'Photoshop', 'Photopea', 'Paint.net', 'GIMP', 'Canva', 'Other'
+        ],
+        'Artist': [
+            'Clip Studio Paint', 'Krita', 'Photoshop', 'Procreate', 'Ibis Paint X', 'Other'
+        ]
+    };
+
+    function updateSoftware(role) {
+        if (!softwareOptions) return;
+        softwareOptions.style.opacity = '0';
+        setTimeout(() => {
+            const options = softwarePresets[role] || softwarePresets['Video Editor'];
+            softwareOptions.innerHTML = options.map(opt => `
+                <label class="checkbox-item">
+                    <input type="checkbox" name="software" value="${opt}">
+                    <span>${opt}</span>
+                </label>
+            `).join('');
+            softwareOptions.style.opacity = '1';
+        }, 300);
+    }
+
+    document.querySelectorAll('input[name="role"]').forEach(radio => {
+        radio.addEventListener('change', (e) => updateSoftware(e.target.value));
+    });
+
     if (appForm) {
         appForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -459,23 +492,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const WEBHOOK_URL = 'https://discord.com/api/webhooks/1460462913192988716/v8aI7eW9YoX-3L6nl3ozpSFr6FKjEBEW90zVAYu8B5Q142-YQiVgswzzOtae4792ALX_';
 
             const formData = new FormData(appForm);
-            const data = {};
-            data.discord = formData.get('discord');
-            data.age = formData.get('age');
-            data.portfolio = formData.get('portfolio');
-            data.experience = formData.get('experience');
-            data.about = formData.get('about');
-            data.payment = formData.getAll('payment').join(', ') || 'None selected';
-            data.software = formData.getAll('software').join(', ') || 'None selected';
-
-            if (data.payment === 'None selected' || data.software === 'None selected') {
-                alert('Please fill in all required fields');
-                return;
-            }
+            const data = {
+                discord: formData.get('discord') || 'N/A',
+                age: formData.get('age') || 'N/A',
+                portfolio: formData.get('portfolio') || 'N/A',
+                experience: formData.get('experience') || 'N/A',
+                about: formData.get('about') || 'N/A',
+                payment: formData.getAll('payment').join(', ') || 'None selected',
+                software: formData.getAll('software').join(', ') || 'None selected',
+                role: formData.get('role') || 'Video Editor'
+            };
 
             const embed = {
                 embeds: [{
-                    title: '📝 New Editor Application',
+                    title: `📝 New ${data.role} Application`,
                     color: 0x5865F2,
                     fields: [
                         { name: '👤 Discord', value: data.discord, inline: true },
@@ -484,15 +514,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         { name: '🎬 Portfolio', value: data.portfolio, inline: false },
                         { name: '🛠️ Software', value: data.software, inline: false },
                         { name: '📅 Experience', value: data.experience, inline: true },
-                        { name: '📄 About', value: data.about.substring(0, 1024), inline: false }
+                        { name: '📄 About', value: data.about.substring(0, 1000) || 'N/A', inline: false }
                     ],
                     timestamp: new Date().toISOString(),
-                    footer: { text: 'VYBE Studios SPA' }
+                    footer: { text: 'VYBE Studios — Internal' }
                 }]
             };
 
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
 
             try {
                 const response = await fetch(WEBHOOK_URL, {
@@ -503,13 +535,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     successMsg.style.display = 'block';
-                    errorMsg.style.display = 'none';
                     appForm.reset();
+                    // Reset software options to default (Video Editor)
+                    updateSoftware('Video Editor');
                     setTimeout(() => { successMsg.style.display = 'none'; }, 5000);
-                } else { throw new Error('Failed'); }
+                } else {
+                    const errText = await response.text();
+                    console.error('Discord Response Error:', errText);
+                    throw new Error('Discord rejected the application');
+                }
             } catch (err) {
+                console.error('Submission Error:', err);
+                errorMsg.textContent = `✗ Submission failed: ${err.message || 'Please try again'}`;
                 errorMsg.style.display = 'block';
-                successMsg.style.display = 'none';
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Submit Application';

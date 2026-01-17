@@ -789,8 +789,26 @@
     <div id="view-apply" class="view-section hidden">
       <div class="application-container">
         <form class="application-form" id="applicationForm">
-          <h1>Editor Application</h1>
+          <h1>Application Form</h1>
           <p class="subtitle">Join the VYBE Studios team</p>
+
+          <div class="form-group">
+            <label>What are you applying for? <span class="required">*</span></label>
+            <div class="radio-group" style="display: flex; gap: 20px; margin-top: 10px; flex-wrap: wrap;">
+              <label class="checkbox-item">
+                <input type="radio" name="role" value="Video Editor" required checked>
+                <span>Video Editor</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="radio" name="role" value="Thumbnail Designer" required>
+                <span>Thumbnail Designer</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="radio" name="role" value="Artist" required>
+                <span>Artist</span>
+              </label>
+            </div>
+          </div>
 
           <div class="form-group">
             <label>Discord Username <span class="required">*</span></label>
@@ -835,7 +853,7 @@
 
           <div class="form-group">
             <label>Software Used <span class="required">*</span></label>
-            <div class="checkbox-group">
+            <div class="checkbox-group" id="softwareOptions">
               <label class="checkbox-item">
                 <input type="checkbox" name="software" value="After Effects">
                 <span>After Effects</span>

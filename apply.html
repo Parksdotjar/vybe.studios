@@ -57,8 +57,26 @@
         <a href="index.html" class="back-btn">← Back to Site</a>
 
         <form class="application-form" id="applicationFormStandalone">
-            <h1>Editor Application</h1>
+            <h1>Application Form</h1>
             <p class="subtitle">Join the VYBE Studios team</p>
+
+            <div class="form-group">
+                <label>What are you applying for? <span class="required">*</span></label>
+                <div class="radio-group" style="display: flex; gap: 20px; margin-top: 10px; flex-wrap: wrap;">
+                    <label class="checkbox-item">
+                        <input type="radio" name="role" value="Video Editor" required checked>
+                        <span>Video Editor</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="role" value="Thumbnail Designer" required>
+                        <span>Thumbnail Designer</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="radio" name="role" value="Artist" required>
+                        <span>Artist</span>
+                    </label>
+                </div>
+            </div>
 
             <div class="form-group">
                 <label>Discord Username <span class="required">*</span></label>
@@ -93,7 +111,7 @@
 
             <div class="form-group">
                 <label>Software Used <span class="required">*</span></label>
-                <div class="checkbox-group">
+                <div class="checkbox-group" id="softwareOptions">
                     <label class="checkbox-item"><input type="checkbox" name="software" value="After Effects">
                         <span>After Effects</span></label>
                     <label class="checkbox-item"><input type="checkbox" name="software" value="Premiere Pro">
@@ -127,6 +145,38 @@
 
     <script>
         const appForm = document.getElementById('applicationFormStandalone');
+        const softwareOptions = document.getElementById('softwareOptions');
+
+        const softwarePresets = {
+            'Video Editor': [
+                'After Effects', 'Premiere Pro', 'DaVinci Resolve', 'Final Cut Pro', 'Sony Vegas', 'Other'
+            ],
+            'Thumbnail Designer': [
+                'Photoshop', 'Photopea', 'Paint.net', 'GIMP', 'Canva', 'Other'
+            ],
+            'Artist': [
+                'Clip Studio Paint', 'Krita', 'Photoshop', 'Procreate', 'Ibis Paint X', 'Other'
+            ]
+        };
+
+        function updateSoftware(role) {
+            softwareOptions.style.opacity = '0';
+            setTimeout(() => {
+                const options = softwarePresets[role] || softwarePresets['Video Editor'];
+                softwareOptions.innerHTML = options.map(opt => `
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="software" value="${opt}">
+                        <span>${opt}</span>
+                    </label>
+                `).join('');
+                softwareOptions.style.opacity = '1';
+            }, 300);
+        }
+
+        document.querySelectorAll('input[name="role"]').forEach(radio => {
+            radio.addEventListener('change', (e) => updateSoftware(e.target.value));
+        });
+
         if (appForm) {
             appForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -141,26 +191,27 @@
 
                 const formData = new FormData(appForm);
                 const data = {
-                    discord: formData.get('discord'),
-                    age: formData.get('age'),
-                    portfolio: formData.get('portfolio'),
-                    experience: formData.get('experience'),
-                    about: formData.get('about'),
-                    payment: Array.from(formData.getAll('payment')).join(', '),
-                    software: Array.from(formData.getAll('software')).join(', ')
+                    discord: formData.get('discord') || 'N/A',
+                    age: formData.get('age') || 'N/A',
+                    portfolio: formData.get('portfolio') || 'N/A',
+                    experience: formData.get('experience') || 'N/A',
+                    about: formData.get('about') || 'N/A',
+                    payment: Array.from(formData.getAll('payment')).join(', ') || 'None selected',
+                    software: Array.from(formData.getAll('software')).join(', ') || 'None selected',
+                    role: formData.get('role') || 'Video Editor'
                 };
 
                 const embed = {
-                    title: 'New Editor Application',
+                    title: `New ${data.role} Application`,
                     color: 0x8f6bff,
                     fields: [
-                        { name: 'Discord', value: data.discord || 'N/A', inline: true },
-                        { name: 'Age', value: data.age || 'N/A', inline: true },
-                        { name: 'Payment', value: data.payment || 'N/A', inline: false },
-                        { name: 'Portfolio', value: data.portfolio || 'N/A', inline: false },
-                        { name: 'Software', value: data.software || 'N/A', inline: false },
-                        { name: 'Experience', value: data.experience || 'N/A', inline: false },
-                        { name: 'About', value: data.about || 'N/A', inline: false }
+                        { name: 'Discord', value: data.discord, inline: true },
+                        { name: 'Age', value: data.age, inline: true },
+                        { name: 'Payment', value: data.payment, inline: false },
+                        { name: 'Portfolio', value: data.portfolio, inline: false },
+                        { name: 'Software', value: data.software, inline: false },
+                        { name: 'Experience', value: data.experience, inline: false },
+                        { name: 'About', value: data.about.substring(0, 1000) || 'N/A', inline: false }
                     ],
                     timestamp: new Date().toISOString()
                 };
@@ -174,12 +225,20 @@
 
                     if (response.ok) {
                         successMsg.style.display = 'block';
+                        errorMsg.style.display = 'none';
                         appForm.reset();
+                        updateSoftware('Video Editor');
+                        setTimeout(() => { successMsg.style.display = 'none'; }, 5000);
                     } else {
-                        throw new Error('Failed');
+                        const errText = await response.text();
+                        console.error('Discord Response Error:', errText);
+                        throw new Error('Discord rejected the application');
                     }
                 } catch (err) {
+                    console.error('Submission Error:', err);
+                    errorMsg.textContent = `✗ Submission failed: ${err.message || 'Please try again'}`;
                     errorMsg.style.display = 'block';
+                    successMsg.style.display = 'none';
                 } finally {
                     submitBtn.disabled = false;
                     submitBtn.innerText = 'Submit Application';
